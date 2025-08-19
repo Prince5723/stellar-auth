@@ -36,7 +36,7 @@ export function SignupForm({ onSwitchToLogin }: SignupFormProps) {
   const onSubmit = async (data: SignupFormData) => {
     setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:8000/signup", {
+      const response = await fetch("http://localhost:3000/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

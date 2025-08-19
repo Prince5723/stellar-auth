@@ -5,9 +5,17 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { toast } from "sonner";
 import { Loader2, Eye, EyeOff } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -23,6 +31,7 @@ interface LoginFormProps {
 export function LoginForm({ onSwitchToSignup }: LoginFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate(); // ✅ useNavigate inside component
 
   const {
     register,
@@ -35,7 +44,7 @@ export function LoginForm({ onSwitchToSignup }: LoginFormProps) {
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:8000/login", {
+      const response = await fetch("http://localhost:3000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,7 +55,10 @@ export function LoginForm({ onSwitchToSignup }: LoginFormProps) {
       if (response.ok) {
         const responseData = await response.json();
         toast.success("Login successful!");
-        // Handle successful login (e.g., store token, redirect)
+
+        // ✅ Redirect to another route
+        navigate("/salary");
+
         console.log("Login response:", responseData);
       } else {
         const errorData = await response.json();
@@ -82,7 +94,7 @@ export function LoginForm({ onSwitchToSignup }: LoginFormProps) {
               <p className="text-sm text-destructive">{errors.email.message}</p>
             )}
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
             <div className="relative">
